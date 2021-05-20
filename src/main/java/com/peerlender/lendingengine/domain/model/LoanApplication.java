@@ -1,16 +1,21 @@
 package com.peerlender.lendingengine.domain.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.Duration;
 import java.util.Objects;
 
-public final class LoanRequest {
+@Entity
+public final class LoanApplication {
 
+    @Id
+    private long id;
     private final int amount;
     private final User borrower;
     private final Duration repaymentTerm;
     private final double interestRate;
 
-    public LoanRequest(int amount, User borrower, Duration repaymentTerm, double interestRate) {
+    public LoanApplication(int amount, User borrower, Duration repaymentTerm, double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
         this.repaymentTerm = repaymentTerm;
@@ -37,7 +42,7 @@ public final class LoanRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LoanRequest that = (LoanRequest) o;
+        LoanApplication that = (LoanApplication) o;
         return amount == that.amount && Double.compare(that.interestRate, interestRate) == 0 && Objects.equals(borrower, that.borrower) && Objects.equals(repaymentTerm, that.repaymentTerm);
     }
 
