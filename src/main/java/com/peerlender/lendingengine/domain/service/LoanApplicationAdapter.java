@@ -25,7 +25,7 @@ public class LoanApplicationAdapter {
         Optional<User> userOptional = userRepository.findById(loanRequest.getBorrowerId());
 
         if (userOptional.isPresent()) {
-            return new LoanApplication(1,loanRequest.getAmount(),
+            return new LoanApplication(loanRequest.getAmount(),
                     userOptional.get(),
                     Duration.ofDays(loanRequest.getDaysToRepay()),
                     loanRequest.getInterestRate());

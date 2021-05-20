@@ -17,8 +17,7 @@ public final class LoanApplication {
     private Duration repaymentTerm;
     private double interestRate;
 
-    public LoanApplication(long id, int amount, User borrower, Duration repaymentTerm, double interestRate) {
-        this.id = id;
+    public LoanApplication(int amount, User borrower, Duration repaymentTerm, double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
         this.repaymentTerm = repaymentTerm;
