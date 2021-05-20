@@ -12,5 +12,5 @@ public class LoanController {
     public void requestLoan(@RequestBody final LoanRequest loanRequest) {
         System.out.println(loanRequest);
     }
-    
+
 }
