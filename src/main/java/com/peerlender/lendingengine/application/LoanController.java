@@ -7,10 +7,7 @@ import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
 import com.peerlender.lendingengine.domain.repository.UserRepository;
 import com.peerlender.lendingengine.domain.service.LoanApplicationAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +39,11 @@ public class LoanController {
     @GetMapping(value = "/loan/requests")
     public List<LoanApplication> findAllLoanApplications() {
         return loanApplicationRepository.findAll();
+    }
+
+    @PostMapping(value = "/loan/accept/{lenderId}/{loanApplicationId}")
+    public void acceptLoan(@PathVariable String lenderId, @PathVariable String loanApplicationId) {
+
     }
 
 }
