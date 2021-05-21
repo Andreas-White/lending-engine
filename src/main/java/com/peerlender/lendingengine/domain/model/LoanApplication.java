@@ -14,13 +14,13 @@ public final class LoanApplication {
     private int amount;
     @ManyToOne
     private User borrower;
-    private Duration repaymentTerm;
+    private long repaymentTerm;
     private double interestRate;
 
     public LoanApplication(int amount, User borrower, Duration repaymentTerm, double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
-        this.repaymentTerm = repaymentTerm;
+        this.repaymentTerm = repaymentTerm.toDays();
         this.interestRate = interestRate;
     }
 
@@ -34,7 +34,7 @@ public final class LoanApplication {
         return borrower;
     }
 
-    public Duration getRepaymentTerm() {
+    public long getRepaymentTerm() {
         return repaymentTerm;
     }
 

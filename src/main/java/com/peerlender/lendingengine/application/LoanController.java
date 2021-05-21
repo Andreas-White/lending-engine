@@ -1,6 +1,7 @@
 package com.peerlender.lendingengine.application;
 
 import com.peerlender.lendingengine.application.model.LoanRequest;
+import com.peerlender.lendingengine.domain.model.LoanApplication;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
 import com.peerlender.lendingengine.domain.repository.UserRepository;
@@ -36,6 +37,11 @@ public class LoanController {
     @GetMapping(value = "/users")
     public List<User> findUsers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping(value = "/loan/requests")
+    public List<LoanApplication> findAllLoanApplications() {
+        return loanApplicationRepository.findAll();
     }
 
 }

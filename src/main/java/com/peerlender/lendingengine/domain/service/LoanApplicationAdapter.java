@@ -21,7 +21,15 @@ public class LoanApplicationAdapter {
         this.userRepository = userRepository;
     }
 
+    /**
+     * This method transforms LoanRequest objects to a LoanApplication object to be used in LoanController class
+     * @param loanRequest the LoanRequest to be transformed
+     * @return the LoanApplication object
+     */
     public LoanApplication transform(LoanRequest loanRequest) {
+        /*Optional is primarily intended for use as a method return type where there is a clear need to represent
+        "no result," and where using null is likely to cause errors. A variable whose type is Optional should never
+        itself be null; it should always point to an Optional instance.*/
         Optional<User> userOptional = userRepository.findById(loanRequest.getBorrowerId());
 
         if (userOptional.isPresent()) {
@@ -32,6 +40,5 @@ public class LoanApplicationAdapter {
         }else {
             throw new UserNotFoundException(loanRequest.getBorrowerId());
         }
-
     }
 }
