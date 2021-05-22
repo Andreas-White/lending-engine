@@ -11,6 +11,8 @@ import com.peerlender.lendingengine.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LoanService {
 
@@ -31,5 +33,9 @@ public class LoanService {
                 .orElseThrow(() -> new LoanApplicationNotFoundException(loanApplicationId));
 
         loanRepository.save(new Loan(lender,loanApplication));
+    }
+
+    public List<Loan> getLoans() {
+        return loanRepository.findAll();
     }
 }

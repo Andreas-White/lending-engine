@@ -19,10 +19,10 @@ public final class LoanApplication {
     private long repaymentTerm;
     private double interestRate;
 
-    public LoanApplication(int amount, User borrower, Duration repaymentTerm, double interestRate) {
+    public LoanApplication(int amount, User borrower, long repaymentTerm, double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
-        this.repaymentTerm = repaymentTerm.toDays();
+        this.repaymentTerm = repaymentTerm;
         this.interestRate = interestRate;
     }
 
