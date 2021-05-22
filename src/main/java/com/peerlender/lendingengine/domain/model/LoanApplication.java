@@ -1,6 +1,7 @@
 package com.peerlender.lendingengine.domain.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.Duration;
@@ -10,6 +11,7 @@ import java.util.Objects;
 public final class LoanApplication {
 
     @Id
+    @GeneratedValue
     private long id;
     private int amount;
     @ManyToOne
@@ -25,6 +27,8 @@ public final class LoanApplication {
     }
 
     public LoanApplication() {}
+
+    public long getId() { return id; }
 
     public int getAmount() {
         return amount;
