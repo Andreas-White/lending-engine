@@ -6,13 +6,13 @@ public final class LoanRequest {
 
     private final int amount;
     private final long borrowerId;
-    private final int daysToRepay;
+    private final long repaymentTerm;
     private final double interestRate;
 
-    public LoanRequest(int amount, long borrowerId, int daysToRepay, double interestRate) {
+    public LoanRequest(int amount, long borrowerId, int repaymentTerm, double interestRate) {
         this.amount = amount;
         this.borrowerId = borrowerId;
-        this.daysToRepay = daysToRepay;
+        this.repaymentTerm = repaymentTerm;
         this.interestRate = interestRate;
     }
 
@@ -24,9 +24,7 @@ public final class LoanRequest {
         return borrowerId;
     }
 
-    public int getDaysToRepay() {
-        return daysToRepay;
-    }
+    public long getRepaymentTerm() { return repaymentTerm; }
 
     public double getInterestRate() {
         return interestRate;
@@ -37,12 +35,12 @@ public final class LoanRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LoanRequest that = (LoanRequest) o;
-        return amount == that.amount && borrowerId == that.borrowerId && daysToRepay == that.daysToRepay && Double.compare(that.interestRate, interestRate) == 0;
+        return amount == that.amount && borrowerId == that.borrowerId && repaymentTerm == that.repaymentTerm && Double.compare(that.interestRate, interestRate) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, borrowerId, daysToRepay, interestRate);
+        return Objects.hash(amount, borrowerId, repaymentTerm, interestRate);
     }
 
     @Override
@@ -50,7 +48,7 @@ public final class LoanRequest {
         return "LoanRequest{" +
                 "amount=" + amount +
                 ", borrowerId=" + borrowerId +
-                ", daysToRepay=" + daysToRepay +
+                ", daysToRepay=" + repaymentTerm +
                 ", interestRate=" + interestRate +
                 '}';
     }

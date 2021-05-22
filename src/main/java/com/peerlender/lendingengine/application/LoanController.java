@@ -32,6 +32,8 @@ public class LoanController {
 
     @PostMapping(value = "/loan/request")
     public void requestLoan(@RequestBody final LoanRequest loanRequest) {
+        System.out.println(loanRequest.getRepaymentTerm());
+        System.out.println(loanRequest.getAmount());
         loanApplicationRepository.save(loanApplicationAdapter.transform(loanRequest));
     }
 

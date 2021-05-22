@@ -8,7 +8,6 @@ import com.peerlender.lendingengine.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.Optional;
 
 @Service
@@ -35,7 +34,7 @@ public class LoanApplicationAdapter {
         if (userOptional.isPresent()) {
             return new LoanApplication(loanRequest.getAmount(),
                     userOptional.get(),
-                    loanRequest.getDaysToRepay(),
+                    loanRequest.getRepaymentTerm(),
                     loanRequest.getInterestRate());
         }else {
             throw new UserNotFoundException(loanRequest.getBorrowerId());
