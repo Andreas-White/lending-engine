@@ -1,5 +1,6 @@
 package com.peerlender.lendingengine.application.service;
 
+import com.peerlender.lendingengine.domain.exception.UnauthorizedUserException;
 import com.peerlender.lendingengine.domain.exception.UserNotFoundException;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.UserRepository;
@@ -36,6 +37,6 @@ public class TokenValidationService {
                     .orElseThrow(() -> new UserNotFoundException(responseEntity.getBody()));
         }
         else
-            throw new RuntimeException("Invalid Token");
+            throw new UnauthorizedUserException(responseEntity.getBody());
     }
 }
