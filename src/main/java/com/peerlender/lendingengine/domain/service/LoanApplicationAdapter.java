@@ -25,11 +25,11 @@ public class LoanApplicationAdapter {
      * @param loanRequest the LoanRequest to be transformed
      * @return the LoanApplication object
      */
-    public LoanApplication transform(LoanRequest loanRequest) {
+    public LoanApplication transform(LoanRequest loanRequest, User borrower) {
         /*Optional is primarily intended for use as a method return type where there is a clear need to represent
         "no result," and where using null is likely to cause errors. A variable whose type is Optional should never
         itself be null; it should always point to an Optional instance.*/
-        Optional<User> userOptional = userRepository.findById(loanRequest.getBorrowerId());
+        Optional<User> userOptional = userRepository.findById(borrower.getUsername());
 
         if (userOptional.isPresent()) {
             return new LoanApplication(loanRequest.getAmount(),
@@ -37,7 +37,7 @@ public class LoanApplicationAdapter {
                     loanRequest.getRepaymentTerm(),
                     loanRequest.getInterestRate());
         }else {
-            throw new UserNotFoundException(loanRequest.getBorrowerId());
+            throw new UserNotFoundException(borrower.getUsername());
         }
     }
 }

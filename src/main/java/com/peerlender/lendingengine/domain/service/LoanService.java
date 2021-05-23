@@ -21,14 +21,17 @@ public class LoanService {
     private final LoanRepository loanRepository;
 
     @Autowired
-    public LoanService(LoanApplicationRepository loanApplicationRepository, UserRepository userRepository, LoanRepository loanRepository) {
+    public LoanService(LoanApplicationRepository loanApplicationRepository,
+                       UserRepository userRepository,
+                       LoanRepository loanRepository) {
         this.loanApplicationRepository = loanApplicationRepository;
         this.userRepository = userRepository;
         this.loanRepository = loanRepository;
     }
 
-    public void acceptLoan(final long lenderId, final long loanApplicationId) {
-        User lender = userRepository.findById(lenderId).orElseThrow(() -> new UserNotFoundException(lenderId));
+    public void acceptLoan(final String lenderUsername, final long loanApplicationId) {
+        User lender = userRepository.findById(lenderUsername)
+                .orElseThrow(() -> new UserNotFoundException(lenderUsername));
         LoanApplication loanApplication = loanApplicationRepository.findById(loanApplicationId)
                 .orElseThrow(() -> new LoanApplicationNotFoundException(loanApplicationId));
 
