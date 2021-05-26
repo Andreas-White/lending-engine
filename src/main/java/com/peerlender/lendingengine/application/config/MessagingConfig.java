@@ -1,5 +1,6 @@
 package com.peerlender.lendingengine.application.config;
 
+import com.peerlender.lendingengine.domain.event.UserRegisteredEventHandler;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -36,13 +37,14 @@ public class MessagingConfig {
                                                     MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
         listenerContainer.setConnectionFactory(connectionFactory);
+        listenerContainer.setQueueNames(QUEUE_NAME);
         listenerContainer.setMessageListener(listenerAdapter);
         return listenerContainer;
     }
 
     @Bean
-    public MessageListenerAdapter userRegisteredEventListener() {
-        return new MessageListenerAdapter()
+    public MessageListenerAdapter userRegisteredEventListener(UserRegisteredEventHandler handler) {
+        return new MessageListenerAdapter(handler,"handleUserRegistration");
     }
 
 }
