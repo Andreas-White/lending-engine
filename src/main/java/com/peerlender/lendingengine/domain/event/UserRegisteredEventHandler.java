@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserRegisteredEventHandler {
 
-    private Logger logger = LoggerFactory.getLogger(UserRegisteredEventHandler.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(UserRegisteredEventHandler.class);
     private static final Gson GSON = new Gson();
     private final UserRepository userRepository;
 
@@ -22,7 +22,7 @@ public class UserRegisteredEventHandler {
 
     public void handleUserRegistration(String userDetails) {
         User user = GSON.fromJson(userDetails,User.class);
-        logger.info("user {} registered", user.getUsername());
+        LOGGER.info("user {} registered", user.getUsername());
         userRepository.save(user);
     }
 }
