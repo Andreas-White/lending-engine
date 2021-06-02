@@ -2,6 +2,7 @@ package com.peerlender.lendingengine.domain.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
 @Entity
@@ -13,13 +14,16 @@ public final class User {
     private String lastName;
     private int age;
     private String occupation;
+    @OneToOne
+    private Balance balance;
 
-    public User(String username, String firstName, String lastName, int age, String occupation) {
+    public User(String username, String firstName, String lastName, int age, String occupation, Balance balance) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.occupation = occupation;
+        this.balance = balance;
     }
 
     public User() {}
@@ -44,17 +48,27 @@ public final class User {
         return occupation;
     }
 
+    public Balance getBalance() { return balance; }
+
+    public void topUp(final Money money) {
+        balance.topUp(money);
+    }
+
+    public void withdraw(final Money money) {
+        balance.withdraw(money);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(occupation, user.occupation);
+        return age == user.age && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(occupation, user.occupation) && Objects.equals(balance, user.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, firstName, lastName, age, occupation);
+        return Objects.hash(username, firstName, lastName, age, occupation, balance);
     }
 
     @Override
@@ -65,6 +79,7 @@ public final class User {
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", occupation='" + occupation + '\'' +
+                ", balance=" + balance +
                 '}';
     }
 }
