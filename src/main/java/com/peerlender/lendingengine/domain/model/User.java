@@ -1,5 +1,6 @@
 package com.peerlender.lendingengine.domain.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -14,7 +15,8 @@ public final class User {
     private String lastName;
     private int age;
     private String occupation;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL) // cascade relate the user object to the balance object, if a user is deleted
+    // the related balance is deleted
     private Balance balance;
 
     public User(String username, String firstName, String lastName, int age, String occupation, Balance balance) {
