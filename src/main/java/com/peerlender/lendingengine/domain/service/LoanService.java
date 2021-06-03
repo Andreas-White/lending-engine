@@ -1,6 +1,7 @@
 package com.peerlender.lendingengine.domain.service;
 
 import com.peerlender.lendingengine.domain.exception.LoanApplicationNotFoundException;
+import com.peerlender.lendingengine.domain.exception.LoanNotFoundException;
 import com.peerlender.lendingengine.domain.exception.UserNotFoundException;
 import com.peerlender.lendingengine.domain.model.*;
 import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
@@ -37,10 +38,20 @@ public class LoanService {
         User lender = getLender(lenderUsername);
         LoanApplication loanApplication = getLoanApplication(loanApplicationId);
         User borrower = loanApplication.getBorrower();
-        Money money = new Money(Currency.USD,loanApplication.getAmount());
+        Money money = loanApplication.getAmount();
         lender.withdraw(money);
         borrower.topUp(money);
-        loanRepository.save(new Loan(lender,loanApplication));
+        loanRepository.save(new Loan(lender, loanApplication));
+    }
+
+    @Transactional
+    public void repayLoan(final Money money,final int id, final User borrower) {
+        Loan loan = loanRepository.findByIdAndBorrower(id,borrower).orElseThrow(() -> new LoanNotFoundException(id));
+
+        Money paidAmount = money.getAmount() > loan.getAmountOwed().getAmount() ?
+                loan.getAmountOwed() : money;
+
+        loan.repay(paidAmount);
     }
 
     public List<Loan> findAllBorrowedLoans(final User borrower) {

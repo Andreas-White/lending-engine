@@ -1,5 +1,6 @@
 package com.peerlender.lendingengine.application;
 
+import com.peerlender.lendingengine.application.model.LoanRepaymentRequest;
 import com.peerlender.lendingengine.application.model.LoanRequest;
 import com.peerlender.lendingengine.application.service.TokenValidationService;
 import com.peerlender.lendingengine.domain.model.Loan;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/loan")
 public class LoanController {
 
     private final LoanApplicationRepository loanApplicationRepository;
@@ -31,39 +33,46 @@ public class LoanController {
         this.tokenValidationService = tokenValidationService;
     }
 
-    @PostMapping(value = "/loan/request")
+    @PostMapping(value = "/request")
     public void requestLoan(@RequestBody final LoanRequest loanRequest, @RequestHeader String authorization) {
         User borrower = tokenValidationService.validateTokenAndGetUser(authorization);
         loanApplicationRepository.save(loanApplicationAdapter.transform(loanRequest, borrower));
     }
 
-    @GetMapping(value = "/loan/requests")
+    @GetMapping(value = "/requests")
     public List<LoanApplication> findAllLoanApplications(@RequestHeader String authorization) {
         tokenValidationService.validateTokenAndGetUser(authorization);
         return loanApplicationRepository.findAll();
     }
 
-    @PostMapping(value = "/loan/accept/{loanApplicationId}")
+    @PostMapping(value = "/accept/{loanApplicationId}")
     public void acceptLoan(@PathVariable String loanApplicationId, @RequestHeader String authorization) {
         User lender = tokenValidationService.validateTokenAndGetUser(authorization);
         loanService.acceptLoan(lender.getUsername(),Long.parseLong(loanApplicationId));
     }
 
-    @GetMapping(value = "/loans")
+    @GetMapping(value = "/all")
     public List<Loan> findAllLoans(@RequestHeader String authorization) {
         tokenValidationService.validateTokenAndGetUser(authorization);
         return loanService.getLoans();
     }
 
-    @GetMapping(value = "/loan/borrowed")
+    @GetMapping(value = "/borrowed")
     public List<Loan> findBorrowedLoans(@RequestHeader String authorization) {
         User borrower = tokenValidationService.validateTokenAndGetUser(authorization);
         return loanService.findAllBorrowedLoans(borrower);
     }
 
-    @GetMapping(value = "/loan/lent")
+    @GetMapping(value = "/lent")
     public List<Loan> findLentLoans(@RequestHeader String authorization) {
         User lender = tokenValidationService.validateTokenAndGetUser(authorization);
         return loanService.findAllLentLoans(lender);
+    }
+
+    @PostMapping(value = "/repay")
+    public void repayLoan(@RequestBody LoanRepaymentRequest loanRepaymentRequest,
+                          @RequestHeader String authorization) {
+        User borrower = tokenValidationService.validateTokenAndGetUser(authorization);
+        loanService.repayLoan(loanRepaymentRequest.getAmount(),loanRepaymentRequest.getLoanId(),borrower);
     }
 }

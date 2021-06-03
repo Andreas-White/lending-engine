@@ -29,8 +29,8 @@ public final class LoanApplication {
 
     public long getId() { return id; }
 
-    public int getAmount() {
-        return amount;
+    public Money getAmount() {
+        return new Money(Currency.USD,amount);
     }
 
     public User getBorrower() {
