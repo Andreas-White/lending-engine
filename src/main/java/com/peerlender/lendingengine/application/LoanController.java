@@ -44,12 +44,6 @@ public class LoanController {
         loanApplicationRepository.save(loanApplicationAdapter.transform(loanRequest, borrower));
     }
 
-    @GetMapping(value = "/users")
-    public List<User> findUsers(HttpServletRequest request) {
-        tokenValidationService.validateTokenAndGetUser(request.getHeader(HttpHeaders.AUTHORIZATION));
-        return userRepository.findAll();
-    }
-
     @GetMapping(value = "/loan/requests")
     public List<LoanApplication> findAllLoanApplications(HttpServletRequest request) {
         tokenValidationService.validateTokenAndGetUser(request.getHeader(HttpHeaders.AUTHORIZATION));
