@@ -13,7 +13,8 @@ public class Balance {
     private long id;
 
     //@ElementCollection
-    @MapKeyClass(Currency.class)
+    //@MapKeyClass(Currency.class)
+    @MapKeyEnumerated(EnumType.STRING)
     @OneToMany(targetEntity = Money.class, cascade = CascadeType.ALL)
     private final Map<Currency,Money> moneyMap = new HashMap<>();
 
