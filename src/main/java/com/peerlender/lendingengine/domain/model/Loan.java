@@ -9,7 +9,7 @@ public class Loan {
 
     @Id
     @GeneratedValue
-    private int Id;
+    private int id;
     @ManyToOne
     private User borrower;
     @ManyToOne
@@ -41,7 +41,7 @@ public class Loan {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public User getBorrower() {
@@ -65,18 +65,18 @@ public class Loan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Loan loan = (Loan) o;
-        return Id == loan.Id && Double.compare(loan.interestRate, interestRate) == 0 && Objects.equals(borrower, loan.borrower) && Objects.equals(lender, loan.lender) && Objects.equals(amount, loan.amount) && Objects.equals(dateLent, loan.dateLent) && Objects.equals(dateDue, loan.dateDue) && Objects.equals(amountRepaid, loan.amountRepaid);
+        return id == loan.id && Double.compare(loan.interestRate, interestRate) == 0 && Objects.equals(borrower, loan.borrower) && Objects.equals(lender, loan.lender) && Objects.equals(amount, loan.amount) && Objects.equals(dateLent, loan.dateLent) && Objects.equals(dateDue, loan.dateDue) && Objects.equals(amountRepaid, loan.amountRepaid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, borrower, lender, amount, interestRate, dateLent, dateDue, amountRepaid);
+        return Objects.hash(id, borrower, lender, amount, interestRate, dateLent, dateDue, amountRepaid);
     }
 
     @Override
     public String toString() {
         return "Loan{" +
-                "Id=" + Id +
+                "Id=" + id +
                 ", borrower=" + borrower +
                 ", lender=" + lender +
                 ", amount=" + amount +

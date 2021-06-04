@@ -33,7 +33,8 @@ public class LoanService {
         return loanRepository.findAll();
     }
 
-    @Transactional
+    @Transactional // Used in case of unexpected behaviour which may result to duplicated or partially completed
+    // actions, with @Transactional this situation is avoided
     public void acceptLoan(final String lenderUsername, final long loanApplicationId) {
         User lender = getLender(lenderUsername);
         LoanApplication loanApplication = getLoanApplication(loanApplicationId);
@@ -47,10 +48,8 @@ public class LoanService {
     @Transactional
     public void repayLoan(final Money money,final int id, final User borrower) {
         Loan loan = loanRepository.findByIdAndBorrower(id,borrower).orElseThrow(() -> new LoanNotFoundException(id));
-
-        Money paidAmount = money.getAmount() > loan.getAmountOwed().getAmount() ?
+        Money paidAmount = (money.getAmount() > loan.getAmountOwed().getAmount()) ?
                 loan.getAmountOwed() : money;
-
         loan.repay(paidAmount);
     }
 
