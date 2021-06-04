@@ -38,11 +38,7 @@ public class LoanService {
     public void acceptLoan(final String lenderUsername, final long loanApplicationId) {
         User lender = getLender(lenderUsername);
         LoanApplication loanApplication = getLoanApplication(loanApplicationId);
-        User borrower = loanApplication.getBorrower();
-        Money money = loanApplication.getAmount();
-        lender.withdraw(money);
-        borrower.topUp(money);
-        loanRepository.save(new Loan(lender, loanApplication));
+        loanRepository.save(loanApplication.acceptLoanApplication(lender));
     }
 
     @Transactional
@@ -53,12 +49,12 @@ public class LoanService {
         loan.repay(paidAmount);
     }
 
-    public List<Loan> findAllBorrowedLoans(final User borrower) {
-        return loanRepository.findAllByBorrower(borrower);
+    public List<Loan> findAllBorrowedLoans(final User borrower, final Status status) {
+        return loanRepository.findAllByBorrowerAndStatus(borrower,status);
     }
 
-    public List<Loan> findAllLentLoans(final User lender) {
-        return loanRepository.findAllByLender(lender);
+    public List<Loan> findAllLentLoans(final User lender, final Status status) {
+        return loanRepository.findAllByLenderAndStatus(lender, status);
     }
 
     private LoanApplication getLoanApplication(long loanApplicationId) {

@@ -5,6 +5,7 @@ import com.peerlender.lendingengine.application.model.LoanRequest;
 import com.peerlender.lendingengine.application.service.TokenValidationService;
 import com.peerlender.lendingengine.domain.model.Loan;
 import com.peerlender.lendingengine.domain.model.LoanApplication;
+import com.peerlender.lendingengine.domain.model.Status;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
 import com.peerlender.lendingengine.domain.service.LoanApplicationAdapter;
@@ -42,7 +43,7 @@ public class LoanController {
     @GetMapping(value = "/requests")
     public List<LoanApplication> findAllLoanApplications(@RequestHeader String authorization) {
         tokenValidationService.validateTokenAndGetUser(authorization);
-        return loanApplicationRepository.findAll();
+        return loanApplicationRepository.findAllByStatusEquals(Status.UNRESOLVED);
     }
 
     @PostMapping(value = "/accept/{loanApplicationId}")
@@ -57,16 +58,16 @@ public class LoanController {
         return loanService.getLoans();
     }
 
-    @GetMapping(value = "/borrowed")
-    public List<Loan> findBorrowedLoans(@RequestHeader String authorization) {
+    @GetMapping(value = "/{status}/borrowed")
+    public List<Loan> findBorrowedLoans(@RequestHeader String authorization,@PathVariable Status status) {
         User borrower = tokenValidationService.validateTokenAndGetUser(authorization);
-        return loanService.findAllBorrowedLoans(borrower);
+        return loanService.findAllBorrowedLoans(borrower,status);
     }
 
-    @GetMapping(value = "/lent")
-    public List<Loan> findLentLoans(@RequestHeader String authorization) {
+    @GetMapping(value = "/{status}/lent")
+    public List<Loan> findLentLoans(@RequestHeader String authorization,@PathVariable Status status) {
         User lender = tokenValidationService.validateTokenAndGetUser(authorization);
-        return loanService.findAllLentLoans(lender);
+        return loanService.findAllLentLoans(lender,status);
     }
 
     @PostMapping(value = "/repay")

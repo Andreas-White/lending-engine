@@ -21,6 +21,7 @@ public class Loan {
     private LocalDate dateDue;
     @OneToOne(cascade = CascadeType.ALL)
     private Money amountRepaid;
+    private Status status;
 
     public Loan() {}
 
@@ -32,12 +33,17 @@ public class Loan {
         this.dateLent = LocalDate.now();
         this.dateDue = LocalDate.now().plusDays(loanApplication.getRepaymentTerm());
         this.amountRepaid = Money.ZERO;
+        this.status = Status.UNRESOLVED;
     }
 
     public void repay(final Money money) {
         borrower.withdraw(money);
         lender.topUp(money);
         amountRepaid = amountRepaid.add(money);
+
+        if (getAmountOwed().equals(Money.ZERO)) {
+            status = Status.RESOLVED;
+        }
     }
 
     public int getId() {

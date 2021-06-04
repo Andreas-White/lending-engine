@@ -3,6 +3,8 @@ package com.peerlender.lendingengine.domain.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 @Entity
@@ -14,29 +16,29 @@ public final class Money {
     @GeneratedValue
     private long id;
     private Currency currency;
-    private double amount;
+    private BigDecimal amount;
 
     public Money() {}
 
     public Money(Currency currency, double amount) {
         this.currency = currency;
-        this.amount = amount;
+        this.amount = BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_DOWN);
     }
 
     public Money add(final Money money) {
         if (this.currency != money.getCurrency())
             throw new IllegalArgumentException();
-        return new Money(this.currency,this.amount + money.getAmount());
+        return new Money(this.currency,this.amount.doubleValue() + money.getAmount());
     }
 
     public Money remove(final Money money) {
-        if (this.currency != money.getCurrency() || money.getAmount() > this.amount)
+        if (this.currency != money.getCurrency() || money.getAmount() > this.amount.doubleValue())
             throw new IllegalArgumentException();
-        return new Money(this.currency,amount - money.getAmount());
+        return new Money(this.currency,amount.doubleValue() - money.getAmount());
     }
 
     public Money times(final double multiplier) {
-        return new Money(Currency.USD, this.amount * multiplier);
+        return new Money(Currency.USD, this.amount.doubleValue() * multiplier);
     }
 
     public Currency getCurrency() {
@@ -44,7 +46,7 @@ public final class Money {
     }
 
     public double getAmount() {
-        return amount;
+        return amount.doubleValue();
     }
 
     @Override
@@ -52,7 +54,7 @@ public final class Money {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Money money = (Money) o;
-        return Double.compare(money.amount, amount) == 0 && currency == money.currency;
+        return Double.compare(money.amount.doubleValue(), amount.doubleValue()) == 0 && currency == money.currency;
     }
 
     @Override
