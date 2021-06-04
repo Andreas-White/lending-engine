@@ -17,15 +17,24 @@ public final class LoanApplication {
     private User borrower;
     private long repaymentTerm;
     private double interestRate;
+    private Status status;
 
     public LoanApplication(int amount, User borrower, long repaymentTerm, double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
         this.repaymentTerm = repaymentTerm;
         this.interestRate = interestRate;
+        this.status = Status.UNRESOLVED;
     }
 
     public LoanApplication() {}
+
+    public Loan acceptLoanApplication(final User lender) {
+        lender.withdraw(getAmount());
+        borrower.topUp(getAmount());
+        status = Status.RESOLVED;
+        return new Loan(lender,this);
+    }
 
     public long getId() { return id; }
 
