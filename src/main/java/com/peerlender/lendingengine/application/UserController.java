@@ -1,6 +1,7 @@
 package com.peerlender.lendingengine.application;
 
 import com.peerlender.lendingengine.application.service.TokenValidationService;
+import com.peerlender.lendingengine.application.service.TokenValidationServiceImpl;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
